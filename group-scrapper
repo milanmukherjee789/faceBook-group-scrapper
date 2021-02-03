@@ -1,0 +1,164 @@
+async function scrolltillend(){
+lenPrevious = 0;
+lenPreviousPrevious=0;
+lenPreviousPreviousPrevious=0;
+i=0;
+postlist=document.getElementsByClassName("du4w35lb k4urcfbm l9j0dhe7 sjgh65i0");
+lenCurrent= postlist.length;
+for(i=0;i<lenCurrent;i++){
+
+  window.scrollTo(0,document.body.scrollHeight);
+  await sleep(2000);
+  postlist=document.getElementsByClassName("du4w35lb k4urcfbm l9j0dhe7 sjgh65i0");
+
+  await sleep(1000);
+  lenCurrent= postlist.length;
+   postLast=postlist[lenCurrent-1];
+  try{
+  if( postLast.getElementsByClassName("fcg")[0].innerText.split("created the group").length>1){
+  break;
+  }
+  }
+  catch(err){}
+ 
+  }
+  //callback();
+}
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function printPost(){
+scrolltillend();
+await sleep(2000);
+postlist=document.getElementsByClassName("_4-u2 mbm _4mrt _5jmm _5pat _5v3q _7cqq _4-u8");
+
+for (i=0;i<postlist.length;i++){
+  try {
+  post = postlist[i];
+
+  console.log("post number"+i+"......................................................................");
+
+  try{
+  expandPostContentLength= post.getElementsByClassName("see_more_link").length;
+  for (j=0;j<expandPostContentLength;j++){
+    expandPostContent= post.getElementsByClassName("see_more_link")[j].click();
+  }
+  await sleep(100);
+  }
+  catch(err){}
+
+  posterName= post.getElementsByClassName("fcg")[0].innerHTML.split("title=\"")[1].split("\" href")[0];
+postTime=post.getElementsByClassName("_5ptz")[0].title.split(",")[0];
+
+console.log("posterName \t"+posterName+"\t postTime"+postTime+"\t");
+
+try{
+posterLink = post.getElementsByClassName("fcg")[0].innerHTML.split("href=\"")[1].split("?")[0];
+}
+catch(err){
+posterLink="Unavailable";
+}
+
+console.log("posterLink \t"+posterLink+"\t");
+
+//postContent=post.getElementsByClassName("_5pbx userContent _3576")[0].innerText;
+//postContent=post.getElementsByClassName("_4a6n")[0].innerText;
+//postContent=post.getElementsByClassName("mtm _5pco")[0].innerText;
+try{
+  postContent=post.getElementsByClassName("_5pbx userContent _3576")[0].innerText;
+}
+catch(err){
+postContent= "Unavailable";
+}
+
+console.log("postContent \t"+postContent+"\t");
+
+try{
+  ColouredPost= post.getElementsByClassName("_4a6n")[0].textContent;
+}
+catch(err){
+  ColouredPost= "Unavailable";
+}
+
+console.log("ColouredPost \t"+ColouredPost+"\t");
+
+
+try{
+    sharedLink = post.getElementsByClassName("_3ekx _29_4")[0].innerHTML.split("href=\"")[2].split("aria-label")[0];
+}
+catch(err){
+    sharedLink = "Unavailable";
+}
+
+console.log("sharedLink \t"+sharedLink+"\t");
+try{
+  sharedLinkContent= post.getElementsByClassName("_3ekx _29_4")[0].innerText;
+}
+catch(err){
+  sharedLinkContent = "Unavailable";
+}
+
+console.log("sharedLinkContent \t"+sharedLinkContent+"\t");
+
+try{
+  SharedPostContent=post.getElementsByClassName("mtm _5pco")[0].innerText;
+}
+catch(err){
+  SharedPostContent = "Unavailable";
+}
+
+console.log("SharedPostContent \t"+SharedPostContent+"\t");
+
+
+try{
+postLike= post.getElementsByClassName("_81hb")[0].innerText;
+}
+catch(err){
+postLike="0";
+}
+
+console.log("postLike \t"+postLike+"\t");
+
+try{
+postComments= post.getElementsByClassName("_1whp _4vn2")[0].innerText.split(" comment")[0];
+}
+catch(err){
+postComments ="0";
+}
+
+console.log("postComments \t"+postComments+"\t");
+
+try{
+postShare=post.getElementsByClassName("_355t _4vn2")[0].innerText.split(" ")[0];
+}
+catch(err){
+postShare = "0";
+}
+
+console.log("postShare \t"+postShare+"\t");
+
+  //console.log(posterName+"\t"+postTime+"\t"+posterLink+"\t"+postContent+"\t"         +postLike+"\t"+postComments+"\t"+postShare);
+  console.table()
+  }
+  catch(err) {
+  continue;
+}
+if(i+1 >= postlist.length){
+  prePostListLength= postlist.length;
+  postlist=document.getElementsByClassName("_4-u2 mbm _4mrt _5jmm _5pat _5v3q _7cqq _4-u8");
+  await sleep(300);
+  if (prePostListLength == postlist.length){
+    scrolltillend();
+  await sleep(60000);
+  postlist=document.getElementsByClassName("_4-u2 mbm _4mrt _5jmm _5pat _5v3q _7cqq _4-u8");
+  }
+  continue;
+ 
+}
+}
+}
+
+printPost()
